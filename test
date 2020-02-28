@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+qiv -fismd 3 /home/pi/GecEntrance/Default/*.png & sleep 2
+qiv -fismd 3 /home/pi/GecEntrance/Images/*.png & sleep 1
+ischanged=1
+export ischanged
+while true
+do 
+	ischanged=1
+	python /home/pi/GecEntrance/syncblob.py
+	ischanged=$?
+	echo $ischanged
+	date
+	{
+	if [ $ischanged -eq 0 ] 
+		then
+		qiv -fismd 3 /home/pi/GecEntrance/Images/*.png 
+	fi
+	} & sleep 5
+	date
+	echo waking up 
+done
